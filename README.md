@@ -334,7 +334,7 @@ The OPC+ Cloud Platform is currently available for research and professional use
 
 <div align="center">
 
-![Platform Login](https://raw.githubusercontent.com/FangPoHsun/opc-cloud-platform/main/Demo_Video\English\OPC_CLoud_Platform.mp4)
+![Platform Login](https://raw.githubusercontent.com/FangPoHsun/opc-cloud-platform/main/Demo_Video/English/OPC_CLoud_Platform.mp4)
 
 *OPC+ Cloud Platform - Professional optical proximity correction service*
 
