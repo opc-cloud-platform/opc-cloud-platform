@@ -320,7 +320,7 @@ OPC+ is developed by the **National Yang Ming Chiao Tung University (NYCU)** res
 
 🔬 **TSRI** - Taiwan Semiconductor Research Institute  
 🎓 **University of Southampton, UK**  
-🏢 **Cornerstone Research**
+<!-- 🏢 **Cornerstone Research** -->
 
 </div>
 
@@ -328,13 +328,13 @@ Our platform combines cutting-edge academic research with real-world industrial 
 
 ---
 
-## 🌐 Platform Access
+## 🌐 Platform Access and Demo
 
 The OPC+ Cloud Platform is currently available for research and professional use.
 
 <div align="center">
 
-![Platform Login](https://raw.githubusercontent.com/FangPoHsun/opc-cloud-platform/main/assets/platform_login.png)
+![Platform Login](https://raw.githubusercontent.com/FangPoHsun/opc-cloud-platform/main/Demo_Video\English\OPC_CLoud_Platform.mp4)
 
 *OPC+ Cloud Platform - Professional optical proximity correction service*
 
