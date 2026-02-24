@@ -330,11 +330,12 @@ Our platform combines cutting-edge academic research with real-world industrial 
 
 ## 🌐 Platform Access and Demo
 
-The OPC+ Cloud Platform is currently available for research and professional use.
+The OPC+ Cloud Platform is currently available for research and professional use. (Click the ICON below to see to demonstration)
 
 <div align="center">
 
-<video src="Demo_Video/English/OPC_CLoud_Platform.mp4" controls width="600"></video>
+[![Watch Demo](assets\LOGO.png)](https://1drv.ms/v/c/b3d939c1b114688e/IQApoParDSawRYmbRtlrjC-ZATyP_tpkrSk0mi2YWqsUwgU?e=z7ssAX)
+
 
 *OPC+ Cloud Platform - Professional optical proximity correction service*
 
