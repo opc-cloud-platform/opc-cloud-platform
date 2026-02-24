@@ -176,7 +176,7 @@ Our platform implements a comprehensive 3-step correction process: OPC Correctio
 
 ### Infrastructure
 - **Orchestration**: Kubernetes-managed clusters
-- **GPU Resources**: 12+ GPUs/TPUs in public cloud
+- **GPU Resources**: 12+ GPUs in public cloud
 - **Deployment**: Public, private, or hybrid models
 - **Scaling**: Dynamic elastic resource allocation
 
@@ -214,7 +214,7 @@ OPC+ offers flexible deployment options to meet your security and performance re
 <td width="33%" valign="top">
 
 ### ☁️ Public Cloud
-- Access a cluster of **12+ GPUs/TPUs**
+- Access a cluster of **12+ GPUs**
 - Optimal job scheduling and resource utilization
 - No infrastructure management
 - **Ideal for**: Startups, research labs, and rapid prototyping
@@ -334,7 +334,7 @@ The OPC+ Cloud Platform is currently available for research and professional use
 
 <div align="center">
 
-![Platform Login](https://raw.githubusercontent.com/FangPoHsun/opc-cloud-platform/main/Demo_Video/English/OPC_CLoud_Platform.mp4)
+<video src="https://github.com/FangPoHsun/opc-cloud-platform/raw/main/Demo_Video/English/OPC_CLoud_Platform.mp4" controls width="600"></video>
 
 *OPC+ Cloud Platform - Professional optical proximity correction service*
 
@@ -355,7 +355,7 @@ The OPC+ Cloud Platform is currently available for research and professional use
 Interested in learning more about OPC+ or getting access to the platform?
 
 - **Principal Investigator**: [Prof. Peichen Yu](https://nycu-pal.com/pi.html)
-- **Email**: yup@nycu.edu.tw
+- **Email**: peichen.yu@nycu.edu.tw
 - **Lab Website**: [PAL Lab - Photonics & Lithography](https://nycu-pal.com/)
 - **Platform**: [OPC+ Cloud Platform](https://nycu-opcplatform.ddns.net/)
 - **Institution**: [National Yang Ming Chiao Tung University (NYCU)](https://www.nycu.edu.tw/)
