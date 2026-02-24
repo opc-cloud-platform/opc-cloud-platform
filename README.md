@@ -344,7 +344,7 @@ The OPC+ Cloud Platform is currently available for research and professional use
 
 1. **Visit the Platform**: [https://nycu-opcplatform.ddns.net/](https://nycu-opcplatform.ddns.net/login)
 2. **Register**: Create an account for research or professional use
-3. **Start Correcting**: Upload your layouts and experience 50x faster OPC
+3. **Start Correcting**: Upload your layouts and experience
 
 **Supported by**: National Science and Technology Council (NSTC), Taiwan
 
