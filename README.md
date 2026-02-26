@@ -343,7 +343,7 @@ The OPC+ Cloud Platform is currently available for research and professional use
 
 ### Getting Access
 
-1. **Visit the Platform**: [https://nycu-opcplatform.ddns.net/](https://nycu-opcplatform.ddns.net/login)
+1. **Visit the Platform**: [https://nycu-opcplatform.ddns.net/](https://youtu.be/r_czE7M4en0)
 2. **Register**: Create an account for research or professional use
 3. **Start Correcting**: Upload your layouts and experience
 
