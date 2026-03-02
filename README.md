@@ -357,7 +357,7 @@ Interested in learning more about OPC+ or getting access to the platform?
 
 - **Principal Investigator**: [Prof. Peichen Yu](https://nycu-pal.com/pi.html)
 - **Email**: peichen.yu@nycu.edu.tw
-- **Lab Website**: [PAL Lab - Photonics & Lithography](https://nycu-pal.com/)
+- **Lab Website**: [PAL Lab - Photonics & Lithography](https://nycu-pal.com/), [NSL Lab - Network and System Laboratory](https://nsl.cs.nycu.edu.tw)
 - **Platform**: [OPC+ Cloud Platform](https://nycu-opcplatform.ddns.net/)
 - **Institution**: [National Yang Ming Chiao Tung University (NYCU)](https://www.nycu.edu.tw/)
 - **Address**: No.1001 Univ. Rd., East Dist., Hsinchu City 300, Taiwan
