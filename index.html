@@ -18,20 +18,22 @@
       background-attachment: fixed;
       line-height: 1.7;
     }
-    p, li { text-align: justify; hyphens: auto; }
-    /* Exclude elements where justify looks wrong */
-    nav p, nav li,
-    .fig-caption,
-    .section-label,
-    .hero-content p,
-    .hero-content li,
-    .highlight-item,
-    .sem-card-label,
-    .deploy-card .best-for,
-    .ref-list li,
-    .badge,
-    td, th,
-    footer p { text-align: unset; hyphens: none; }
+    /* Justify only on wide screens where columns are wide enough */
+    @media (min-width: 860px) {
+      p, li { text-align: justify; hyphens: auto; }
+      nav p, nav li,
+      .fig-caption,
+      .section-label,
+      .hero-content p,
+      .hero-content li,
+      .highlight-item,
+      .sem-card-label,
+      .deploy-card .best-for,
+      .ref-list li,
+      .badge,
+      td, th,
+      footer p { text-align: unset; hyphens: none; }
+    }
     img { max-width: 100%; height: auto; display: block; }
     a { color: var(--blue); text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -434,57 +436,79 @@
         gap: 0.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       }
       .nav-links.open { display: flex; }
-      .nav-links a { padding: 0.55rem 0.75rem; font-size: 0.9rem; }
+      .nav-links a { padding: 0.6rem 0.75rem; font-size: 0.95rem; }
       .nav-cta { margin-top: 0.5rem; text-align: center; }
       .nav-toggle { display: block; }
 
       /* Layout */
-      section { padding: 3rem 1.25rem; }
-      h2.section-title { font-size: 1.5rem; }
+      section { padding: 2.5rem 1.1rem; }
+      h2.section-title { font-size: 1.4rem; }
+      h3.subsection-title { font-size: 1.05rem; }
 
-      /* Grids → single column */
+      /* All multi-column grids → single column */
       .two-col,
       .workflow-modules,
       .deploy-grid,
       .contact-grid,
       .feature-grid,
-      .usecase-grid { grid-template-columns: 1fr; }
+      .usecase-grid,
+      #solution .feature-grid { grid-template-columns: 1fr !important; }
 
-      /* Force 3-col feature grid to 1-col */
-      #solution .feature-grid { grid-template-columns: 1fr; }
-
-      /* SEM */
+      /* SEM: keep side-by-side only if wide enough, else stack */
       .sem-grid { grid-template-columns: 1fr; }
 
       /* Demo */
       .demo-inner { flex-direction: column; gap: 1.5rem; }
       .demo-btn { min-width: unset; width: 100%; }
 
-      /* Highlight bar */
-      .highlight-bar .container { gap: 1.25rem; }
-      .highlight-item .h-value { font-size: 1.3rem; }
+      /* Highlight bar: 2×3 grid instead of single row */
+      .highlight-bar .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem 1.5rem;
+      }
+      .highlight-item .h-value { font-size: 1.25rem; }
+      .highlight-item .h-label { font-size: 0.72rem; }
 
       /* Hero */
-      .hero-content { padding: 3.5rem 1.25rem; }
-      .hero-content h1 { font-size: 1.9rem; }
+      .hero-content { padding: 3rem 1.1rem 2.5rem; }
+      .hero-content h1 { font-size: 1.75rem; }
+      .hero-sub { font-size: 0.95rem !important; }
 
       /* Tables */
       .table-scroll { -webkit-overflow-scrolling: touch; }
-      .comparison-table { min-width: 640px; }
-      .limitation-table { font-size: 0.85rem; }
+      .comparison-table { min-width: 620px; }
+      .limitation-table { font-size: 0.83rem; }
+      .limitation-table th, .limitation-table td { padding: 0.5rem 0.65rem; }
 
       /* Steps */
-      .steps li { padding-left: 3.5rem; }
+      .steps li { padding-left: 3.25rem; font-size: 0.92rem; }
+
+      /* Cards */
+      .feature-card, .module-card, .usecase-card,
+      .deploy-card-body { padding: 1rem; }
+      .feature-card p, .module-card p { font-size: 0.85rem; }
+
+      /* Reduce figure margins */
+      .figure-wrap { margin: 1.25rem auto; }
     }
 
     @media (max-width: 480px) {
-      .hero-badges { gap: 0.35rem; }
-      .badge { font-size: 0.72rem; padding: 0.25rem 0.6rem; }
+      nav { padding: 0 1rem; }
+      .nav-brand { font-size: 0.9rem; }
+      section { padding: 2rem 1rem; }
+      h2.section-title { font-size: 1.25rem; }
+      .hero-content h1 { font-size: 1.5rem; }
+      .hero-badges { gap: 0.3rem; }
+      .badge { font-size: 0.7rem; padding: 0.2rem 0.55rem; }
       .hero-actions { flex-direction: column; }
       .btn { text-align: center; width: 100%; }
-      nav { padding: 0 1rem; }
-      .nav-brand { font-size: 0.95rem; }
-      .highlight-bar .container { flex-direction: column; gap: 1rem; }
+      /* Highlight bar → single column on very small screens */
+      .highlight-bar .container { grid-template-columns: 1fr 1fr; }
+      .sem-card-label { font-size: 0.8rem; }
+      .ref-list li { font-size: 0.82rem; }
+      .contact-table { font-size: 0.82rem; }
+      .contact-table td { padding: 0.5rem 0; }
     }
   </style>
 </head>
