@@ -112,6 +112,21 @@ For photonic ring resonators, OPC correction is critical to device functionality
 
 </div>
 
+### Metalens — Sub-Wavelength Feature Survival
+
+Metalenses rely on densely packed sub-wavelength nano-structures whose precise geometry determines the phase profile of the device. Without OPC, the photolithography process fails to resolve the smallest features—they are either significantly distorted or lost entirely—compromising the optical function of the device. With OPC, all features are faithfully reproduced after lithography, preserving the intended phase distribution across the aperture \[2\].
+
+<div align="center">
+
+| Without OPC | With OPC |
+|:-----------:|:--------:|
+| ![Metalens without OPC](assets/SEM%20Comparison/NoOPC/Mask24_P360_NA0.1_ori_L1.png) | ![Metalens with OPC](assets/SEM%20Comparison/WithOPC/Mask24_P360_NA0.1_EDA_OPC_B_L1.png) |
+| Small features fail to resolve; critical nano-structures lost or severely distorted after lithography | All sub-wavelength features fully resolved; phase profile of metalens preserved |
+
+*Figure 5. SEM images of fabricated metalens structures. OPC ensures survival of all sub-wavelength features critical to device phase control.*
+
+</div>
+
 ---
 
 ## Key Features

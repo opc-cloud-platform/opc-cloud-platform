@@ -17,6 +17,20 @@
       background: #ffffff;
       line-height: 1.7;
     }
+    p, li { text-align: justify; hyphens: auto; }
+    /* Exclude elements where justify looks wrong */
+    nav p, nav li,
+    .fig-caption,
+    .section-label,
+    .hero-content p,
+    .hero-content li,
+    .highlight-item,
+    .sem-card-label,
+    .deploy-card .best-for,
+    .ref-list li,
+    .badge,
+    td, th,
+    footer p { text-align: unset; hyphens: none; }
     img { max-width: 100%; height: auto; display: block; }
     a { color: #1B6CA8; text-decoration: none; }
     a:hover { text-decoration: underline; }
