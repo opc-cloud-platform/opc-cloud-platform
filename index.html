@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OPC+ Cloud Platform — GPU-Accelerated Freeform Mask Correction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #2c3e50;
+      background: #ffffff;
+      line-height: 1.7;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: #1B6CA8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Design Tokens ────────────────────────────────────────── */
+    :root {
+      --navy:   #1a2d4a;
+      --blue:   #1B6CA8;
+      --blue-light: #2E86AB;
+      --red:    #C0392B;
+      --bg-alt: #f4f7fb;
+      --border: #dde3ea;
+      --text:   #2c3e50;
+      --text-muted: #5a6a7a;
+      --radius: 6px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    /* ── Navigation ───────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+      height: 60px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.75rem;
+      color: #fff; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-brand img { height: 32px; width: auto; }
+    .nav-links {
+      display: flex; gap: 0.25rem; list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.85rem; font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: var(--radius);
+      transition: background 0.15s, color 0.15s;
+      text-decoration: none;
+    }
+    .nav-links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .nav-cta {
+      background: var(--blue) !important;
+      color: #fff !important;
+      padding: 0.4rem 1rem !important;
+    }
+    .nav-cta:hover { background: #155a8a !important; }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; }
+    .nav-toggle span {
+      display: block; width: 22px; height: 2px;
+      background: #fff; margin: 5px 0; transition: 0.3s;
+    }
+
+    /* ── Shared Layout ────────────────────────────────────────── */
+    section { padding: 5rem 1.5rem; }
+    .container { max-width: 1080px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue);
+      margin-bottom: 0.5rem;
+    }
+    h2.section-title {
+      font-size: 1.85rem; font-weight: 700;
+      color: var(--navy); margin-bottom: 1.25rem;
+      border-bottom: 3px solid var(--blue);
+      padding-bottom: 0.5rem;
+    }
+    h3.subsection-title {
+      font-size: 1.15rem; font-weight: 600;
+      color: var(--navy); margin: 2rem 0 0.75rem;
+    }
+    .alt-bg { background: var(--bg-alt); }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    #hero {
+      padding: 0; margin-top: 60px;
+      position: relative; overflow: hidden;
+      min-height: 480px;
+      display: flex; align-items: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('assets/opc_platform_banner.png') center/cover no-repeat;
+      filter: brightness(0.35);
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto;
+      padding: 5rem 2rem;
+      color: #fff;
+    }
+    .hero-content .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.3rem 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+    .hero-content h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700; line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    .hero-content h1 span { color: #5dade2; }
+    .hero-content .hero-sub {
+      font-size: 1.05rem; color: rgba(255,255,255,0.8);
+      margin-bottom: 0.5rem;
+    }
+    .hero-content .hero-org {
+      font-size: 0.9rem; color: rgba(255,255,255,0.6);
+      margin-bottom: 2rem;
+    }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.78rem; font-weight: 600;
+      color: #fff;
+    }
+    .badge-blue   { background: #1B6CA8; }
+    .badge-green  { background: #1a7a4a; }
+    .badge-red    { background: #a93226; }
+    .badge-purple { background: #6c3483; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: filter 0.15s, transform 0.1s;
+    }
+    .btn:hover { filter: brightness(1.1); transform: translateY(-1px); text-decoration: none; }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.6); }
+
+    /* ── Highlight Bar ────────────────────────────────────────── */
+    .highlight-bar {
+      background: var(--navy);
+      padding: 1.25rem 1.5rem;
+    }
+    .highlight-bar .container {
+      display: flex; flex-wrap: wrap; gap: 2rem;
+      justify-content: center;
+    }
+    .highlight-item {
+      text-align: center; color: #fff;
+    }
+    .highlight-item .h-value {
+      font-size: 1.6rem; font-weight: 700; color: #5dade2;
+      display: block;
+    }
+    .highlight-item .h-label {
+      font-size: 0.78rem; color: rgba(255,255,255,0.7);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    /* ── Background Section ───────────────────────────────────── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    .limitation-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+    .limitation-table th, .limitation-table td {
+      padding: 0.65rem 0.85rem; border: 1px solid var(--border); text-align: left; vertical-align: top;
+    }
+    .limitation-table th { background: var(--navy); color: #fff; font-weight: 600; }
+    .limitation-table tr:nth-child(even) td { background: #f9fbfd; }
+
+    /* ── Figure Caption ───────────────────────────────────────── */
+    .figure-wrap { text-align: center; margin: 2rem auto; max-width: 800px; }
+    .figure-wrap img { margin: 0 auto; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .fig-caption {
+      margin-top: 0.65rem;
+      font-size: 0.82rem; color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ── SEM Comparison ───────────────────────────────────────── */
+    .sem-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5rem; margin: 1.5rem 0;
+    }
+    .sem-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .sem-card img { width: 100%; }
+    .sem-card-label {
+      padding: 0.65rem 0.85rem;
+      font-size: 0.83rem;
+      border-top: 1px solid var(--border);
+    }
+    .sem-card-label .sem-title {
+      font-weight: 700; font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+    .sem-card-label .sem-title.no-opc { color: var(--red); }
+    .sem-card-label .sem-title.with-opc { color: #1a7a4a; }
+
+    /* ── Feature Cards ────────────────────────────────────────── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .feature-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--blue);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .feature-card h3 {
+      font-size: 1rem; font-weight: 700;
+      color: var(--navy); margin-bottom: 0.5rem;
+    }
+    .feature-card p { font-size: 0.88rem; color: var(--text-muted); }
+
+    /* ── Workflow Modules ─────────────────────────────────────── */
+    .workflow-modules {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem; margin: 1.5rem 0 2rem;
+    }
+    .module-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+    .module-num {
+      display: inline-block;
+      background: var(--blue); color: #fff;
+      width: 28px; height: 28px; border-radius: 50%;
+      text-align: center; line-height: 28px;
+      font-size: 0.85rem; font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+    .module-card p { font-size: 0.85rem; color: var(--text-muted); }
+    .diagram-wrap { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; overflow-x: auto; }
+
+    /* ── Comparison Table ─────────────────────────────────────── */
+    .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .comparison-table th, .comparison-table td {
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      text-align: left; vertical-align: top;
+    }
+    .comparison-table thead th { background: var(--navy); color: #fff; font-weight: 600; }
+    .comparison-table thead th:nth-child(3) { background: var(--blue); }
+    .comparison-table tr:nth-child(even) td { background: #f9fbfd; }
+    .comparison-table td:nth-child(3) { font-weight: 600; color: #155a8a; }
+    .table-scroll { overflow-x: auto; }
+
+    /* ── Getting Started ──────────────────────────────────────── */
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      position: relative;
+      padding: 1.25rem 1.25rem 1.25rem 4rem;
+      margin-bottom: 1rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute; left: 1.25rem; top: 1.25rem;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      font-size: 0.85rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .steps li strong { color: var(--navy); }
+    .prereq-list { list-style: disc; padding-left: 1.5rem; margin-top: 0.5rem; font-size: 0.9rem; }
+    .prereq-list li { margin-bottom: 0.25rem; }
+
+    /* ── Use Cases ────────────────────────────────────────────── */
+    .usecase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+    .usecase-card {
+      background: #fff; border: 1px solid var(--border);
+      border-left: 5px solid var(--blue);
+      border-radius: var(--radius); padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+    .usecase-card h3 { font-size: 0.95rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+    .usecase-card ul { list-style: disc; padding-left: 1.25rem; font-size: 0.85rem; color: var(--text-muted); }
+    .usecase-card ul li { margin-bottom: 0.2rem; }
+
+    /* ── Deployment ───────────────────────────────────────────── */
+    .deploy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 1.5rem; }
+    .deploy-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .deploy-card-header {
+      padding: 0.6rem 1.25rem;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #fff;
+    }
+    .deploy-card-header.public  { background: #1B6CA8; }
+    .deploy-card-header.private { background: #1a3a5a; }
+    .deploy-card-header.hybrid  { background: #2E86AB; }
+    .deploy-card-body { padding: 1.25rem; }
+    .deploy-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; }
+    .deploy-card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .deploy-card .best-for {
+      font-size: 0.78rem; color: var(--blue); font-weight: 600;
+      margin-top: 0.9rem; padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Validation ───────────────────────────────────────────── */
+    .partner-list { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+    .partner-pill {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.88rem; font-weight: 600;
+      color: var(--navy);
+      box-shadow: var(--shadow);
+    }
+
+    /* ── Demo Section ─────────────────────────────────────────── */
+    .demo-inner { display: flex; gap: 3rem; align-items: flex-start; }
+    .demo-actions { display: flex; flex-direction: column; gap: 0.75rem; flex: 0 0 auto; }
+    .demo-btn {
+      display: inline-block; padding: 0.7rem 1.6rem;
+      border-radius: var(--radius); font-size: 0.9rem; font-weight: 600;
+      text-align: center; text-decoration: none;
+      transition: filter 0.15s, transform 0.1s; min-width: 200px;
+    }
+    .demo-btn:hover { filter: brightness(1.08); transform: translateY(-1px); text-decoration: none; }
+    .demo-btn-primary { background: var(--blue); color: #fff; }
+    .demo-btn-secondary {
+      background: #fff; color: var(--navy);
+      border: 1px solid var(--border);
+    }
+    .demo-info h3 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; }
+    .demo-info p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .demo-url {
+      display: inline-block;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.5rem 1rem;
+      font-size: 0.85rem; font-family: monospace; color: var(--blue);
+    }
+    .nstc-note { font-size: 0.82rem; color: var(--text-muted); margin-top: 1rem; }
+
+    /* ── References ───────────────────────────────────────────── */
+    .ref-group { margin-bottom: 1.75rem; }
+    .ref-group-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue); margin-bottom: 0.75rem; }
+    .ref-list { list-style: none; }
+    .ref-list li {
+      font-size: 0.875rem; color: var(--text);
+      padding: 0.6rem 0.75rem;
+      border-left: 3px solid var(--border);
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+    .ref-list li .ref-num { font-weight: 700; color: var(--blue); margin-right: 0.4rem; }
+
+    /* ── Contact ──────────────────────────────────────────────── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+    .contact-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .contact-table td { padding: 0.65rem 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .contact-table td:first-child { font-weight: 600; color: var(--navy); width: 42%; padding-right: 1rem; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,0.7);
+      text-align: center; padding: 2rem 1.5rem;
+      font-size: 0.82rem; line-height: 1.8;
+    }
+    footer a { color: rgba(255,255,255,0.85); }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      /* Nav */
+      .nav-links {
+        display: none; flex-direction: column;
+        position: absolute; top: 60px; left: 0; right: 0;
+        background: var(--navy); padding: 0.75rem 1rem 1rem;
+        gap: 0.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 0.55rem 0.75rem; font-size: 0.9rem; }
+      .nav-cta { margin-top: 0.5rem; text-align: center; }
+      .nav-toggle { display: block; }
+
+      /* Layout */
+      section { padding: 3rem 1.25rem; }
+      h2.section-title { font-size: 1.5rem; }
+
+      /* Grids → single column */
+      .two-col,
+      .workflow-modules,
+      .deploy-grid,
+      .contact-grid,
+      .feature-grid,
+      .usecase-grid { grid-template-columns: 1fr; }
+
+      /* Force 3-col feature grid to 1-col */
+      #solution .feature-grid { grid-template-columns: 1fr; }
+
+      /* SEM */
+      .sem-grid { grid-template-columns: 1fr; }
+
+      /* Demo */
+      .demo-inner { flex-direction: column; gap: 1.5rem; }
+      .demo-btn { min-width: unset; width: 100%; }
+
+      /* Highlight bar */
+      .highlight-bar .container { gap: 1.25rem; }
+      .highlight-item .h-value { font-size: 1.3rem; }
+
+      /* Hero */
+      .hero-content { padding: 3.5rem 1.25rem; }
+      .hero-content h1 { font-size: 1.9rem; }
+
+      /* Tables */
+      .table-scroll { -webkit-overflow-scrolling: touch; }
+      .comparison-table { min-width: 640px; }
+      .limitation-table { font-size: 0.85rem; }
+
+      /* Steps */
+      .steps li { padding-left: 3.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-badges { gap: 0.35rem; }
+      .badge { font-size: 0.72rem; padding: 0.25rem 0.6rem; }
+      .hero-actions { flex-direction: column; }
+      .btn { text-align: center; width: 100%; }
+      nav { padding: 0 1rem; }
+      .nav-brand { font-size: 0.95rem; }
+      .nav-brand img { height: 26px; }
+      .highlight-bar .container { flex-direction: column; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVIGATION ══════════════════════════════════════════════ -->
+<nav>
+  <a class="nav-brand" href="#hero">
+    <img src="assets/LOGO.png" alt="OPC+ Logo" />
+    OPC+ Cloud Platform
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#background">Background</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#workflow">Workflow</a></li>
+    <li><a href="#comparison">Comparison</a></li>
+    <li><a href="#validation">Validation</a></li>
+    <li><a href="#references">References</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://nycu-opcplatform.ddns.net/" target="_blank" class="nav-cta">Launch Platform</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Next-Generation Computational Lithography</div>
+    <h1>OPC<span>+</span> Cloud Platform</h1>
+    <p class="hero-sub">Cloud-Based Freeform Mask Correction · GPU-Accelerated OPC for Semiconductor &amp; Photonics</p>
+    <p class="hero-org">Developed by <a href="https://nycu-pal.com/" style="color:#5dade2">PAL Lab</a> · National Yang Ming Chiao Tung University</p>
+    <div class="hero-badges">
+      <span class="badge badge-blue">Cloud Native</span>
+      <span class="badge badge-green">GPU Accelerated</span>
+      <span class="badge badge-red">50× Faster</span>
+      <span class="badge badge-purple">Curvilinear Support</span>
+    </div>
+    <div class="hero-actions">
+      <a href="https://nycu-opcplatform.ddns.net/" target="_blank" class="btn btn-primary">Launch Platform</a>
+      <a href="https://youtu.be/r_czE7M4en0" target="_blank" class="btn btn-outline">Watch Demo</a>
+      <a href="#background" class="btn btn-outline">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HIGHLIGHT BAR ═══════════════════════════════════════════ -->
+<div class="highlight-bar">
+  <div class="container">
+    <div class="highlight-item"><span class="h-value">50×</span><span class="h-label">Faster than CPU OPC</span></div>
+    <div class="highlight-item"><span class="h-value">&lt;2%</span><span class="h-label">Load Imbalance</span></div>
+    <div class="highlight-item"><span class="h-value">12+</span><span class="h-label">GPUs in Public Cloud</span></div>
+    <div class="highlight-item"><span class="h-value">GDS/OASIS</span><span class="h-label">Industry-Standard Formats</span></div>
+    <div class="highlight-item"><span class="h-value">Freeform</span><span class="h-label">Curvilinear Mask Support</span></div>
+  </div>
+</div>
+
+<!-- ══ BACKGROUND ══════════════════════════════════════════════ -->
+<section id="background" class="alt-bg">
+  <div class="container">
+    <div class="section-label">Background</div>
+    <h2 class="section-title">What Is Optical Proximity Correction (OPC)?</h2>
+
+    <p>
+      Semiconductor and photonic devices are fabricated by projecting light through a patterned mask onto a
+      photosensitive wafer—a process called <strong>photolithography</strong> [7]. Because the wavelength of the
+      exposure source is comparable to, or larger than, the minimum feature sizes being printed,
+      <strong>optical diffraction</strong> causes the projected image to deviate systematically from the intended
+      design: line ends shorten, corners round off, and isolated features may fail to print entirely.
+    </p>
+    <p style="margin-top:1rem;">
+      <strong>Optical Proximity Correction (OPC)</strong> is the pre-distortion technique applied to the mask
+      layout to compensate for these optical and process-induced effects, so that the final printed pattern on
+      the wafer faithfully reproduces the designer's intent. Modern OPC is increasingly realized through
+      <strong>Inverse Lithography Technology (ILT)</strong>—a full-mask optimization approach that directly
+      solves for the mask shape required to produce a target wafer image [6].
+    </p>
+
+    <div class="figure-wrap" style="margin-top:2rem;">
+      <img src="assets/pattern_comparison.png" alt="OPC Concept: Target vs. OPC Mask" />
+      <p class="fig-caption">
+        Figure 1. The target layout (left, without correction) produces a blurred wafer image due to
+        diffraction. The OPC-corrected mask (right) pre-distorts the design so the printed result
+        faithfully reproduces the intended pattern.
+      </p>
+    </div>
+
+    <h3 class="subsection-title">Why Is Traditional OPC Insufficient?</h3>
+    <p>Conventional OPC tools rely on CPU-based, rule-driven solvers designed for Manhattan geometries (rectilinear, axis-aligned shapes). They present three fundamental limitations as the industry advances toward photonics and curvilinear CMOS nodes:</p>
+
+    <table class="limitation-table" style="margin-top:1.25rem;">
+      <thead>
+        <tr><th style="width:22%">Limitation</th><th>Impact</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Speed</strong></td>
+          <td>CPU-bound serial processing makes large-layout corrections extremely time-consuming—often requiring hours per job</td>
+        </tr>
+        <tr>
+          <td><strong>Cost &amp; Accessibility</strong></td>
+          <td>Commercial licenses are prohibitively expensive and operation requires specialized expertise, excluding startups and research institutions</td>
+        </tr>
+        <tr>
+          <td><strong>Geometry Constraints</strong></td>
+          <td>Photonic integrated circuits and next-generation curvilinear CMOS nodes require freeform mask geometries that traditional tools cannot handle natively—forcing lossy polygonal approximation</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ SOLUTION ════════════════════════════════════════════════ -->
+<section id="solution">
+  <div class="container">
+    <div class="section-label">The OPC+ Solution</div>
+    <h2 class="section-title">Breaking the Barriers of Traditional OPC</h2>
+    <p>
+      OPC+ is a <strong>cloud-native, GPU-accelerated</strong> platform that democratizes advanced mask
+      correction. By replacing CPU-bound solvers with massively parallel GPU computation and wrapping the entire
+      workflow in an intuitive web interface, OPC+ removes the barriers of traditional tools while extending
+      OPC capabilities to cutting-edge photonic and semiconductor applications [1].
+    </p>
+    <p style="margin-top:1rem;">The platform is built around three core principles:</p>
+
+    <div class="feature-grid" style="margin-top:1.5rem; grid-template-columns: repeat(3,1fr);">
+      <div class="feature-card">
+        <h3>Speed</h3>
+        <p>CUDA Multi-Stream parallelism delivers <strong>50× faster</strong> correction than CPU-based solvers. Jobs that previously required hours complete in minutes, enabling rapid design iteration [1][3].</p>
+      </div>
+      <div class="feature-card">
+        <h3>Accessibility</h3>
+        <p>A web-based GUI requires no scripting or deep OPC expertise. Upload a layout, configure scanner parameters, and submit. No hardware investment required—GPU clusters are provisioned on demand.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Generality</h3>
+        <p>Native curvilinear mask support enables OPC beyond digital CMOS, validated on photonic integrated circuits and large-area metasurfaces [2][3].</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPERIMENTAL RESULTS ════════════════════════════════════ -->
+<section id="results" class="alt-bg">
+  <div class="container">
+    <div class="section-label">Experimental Results</div>
+    <h2 class="section-title">SEM Validation on Fabricated Devices</h2>
+    <p>
+      The following Scanning Electron Microscope (SEM) images present fabricated device results demonstrating
+      the direct, measurable impact of OPC correction on real photonic structures. All results were obtained
+      from wafers processed at collaborating fabrication facilities.
+    </p>
+
+    <!-- Line Pattern -->
+    <h3 class="subsection-title">Line Pattern — Line End Shortening</h3>
+    <p>
+      Without OPC correction, diffraction at the tips of line features causes the printed ends to
+      <strong>recede inward</strong>, resulting in lines that are shorter than the target design. This line
+      end shortening effect introduces critical dimension (CD) error along the line length axis. OPC
+      pre-compensation extends the mask geometry at line ends so that the fabricated result matches the
+      intended length.
+    </p>
+    <div class="sem-grid">
+      <div class="sem-card">
+        <img src="assets/SEM%20Comparison/NoOPC/Line.jpg" alt="Line pattern without OPC" />
+        <div class="sem-card-label">
+          <div class="sem-title no-opc">Without OPC</div>
+          Line end shortening visible; printed length undershoots target geometry
+        </div>
+      </div>
+      <div class="sem-card">
+        <img src="assets/SEM%20Comparison/WithOPC/Line.jpg" alt="Line pattern with OPC" />
+        <div class="sem-card-label">
+          <div class="sem-title with-opc">With OPC</div>
+          Line ends accurately reproduced; CD along length axis restored
+        </div>
+      </div>
+    </div>
+    <p class="fig-caption" style="text-align:center; margin-top:-0.5rem;">Figure 2. SEM images of fabricated line patterns. Scale bar: 5 µm.</p>
+
+    <!-- Ring Resonator -->
+    <h3 class="subsection-title" style="margin-top:2.5rem;">Ring Resonator — Critical Defect Elimination</h3>
+    <p>
+      For photonic ring resonators, OPC correction is critical to device functionality. Without correction,
+      the coupling gap region fails to open properly—a <strong>fatal fabrication defect</strong> that renders
+      the device non-functional optically. With OPC, the waveguide geometry is accurately reproduced and
+      the coupling region is fully resolved [2].
+    </p>
+    <div class="sem-grid">
+      <div class="sem-card">
+        <img src="assets/SEM%20Comparison/NoOPC/Ring.png" alt="Ring resonator without OPC" />
+        <div class="sem-card-label">
+          <div class="sem-title no-opc">Without OPC</div>
+          Critical defect: lower photoresist layer not opened (circled in red)
+        </div>
+      </div>
+      <div class="sem-card">
+        <img src="assets/SEM%20Comparison/WithOPC/Ring.png" alt="Ring resonator with OPC" />
+        <div class="sem-card-label">
+          <div class="sem-title with-opc">With OPC</div>
+          Clean fabrication: coupling region fully resolved, device functional
+        </div>
+      </div>
+    </div>
+    <p class="fig-caption" style="text-align:center; margin-top:-0.5rem;">Figure 3. SEM images of fabricated ring resonators. Scale bar: 5 µm (overview), 1 µm (inset).</p>
+
+  </div>
+</section>
+
+<!-- ══ KEY FEATURES ════════════════════════════════════════════ -->
+<section id="features">
+  <div class="container">
+    <div class="section-label">Platform Capabilities</div>
+    <h2 class="section-title">Key Features</h2>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>GPU Acceleration</h3>
+        <p>Leveraging CUDA Multi-Stream image-level parallelism, OPC+ achieves <strong>50× faster</strong> mask correction compared to CPU-based methods [1][3].</p>
+      </div>
+      <div class="feature-card">
+        <h3>Cloud-Native Architecture</h3>
+        <p>Built on Kubernetes with elastic resource scheduling. OPC+ dynamically allocates GPU resources across public, private, or hybrid environments. No capital hardware expenditure required.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Native Curvilinear Mask Support</h3>
+        <p>OPC+ natively generates <strong>curvilinear masks</strong> without polygonal approximation, preserving optical phase and waveguide coupling efficiency in photonic applications [2].</p>
+      </div>
+      <div class="feature-card">
+        <h3>Global Inverse Optimization</h3>
+        <p>Full-mask ILT with contour-based L2 optimization achieves superior pattern fidelity and CD uniformity compared to rule-based windowed correction approaches [3][8].</p>
+      </div>
+      <div class="feature-card">
+        <h3>Predictable Turnaround</h3>
+        <p>Two-tier dynamic workload scheduling maintains <strong>&lt;2% execution imbalance</strong> across heterogeneous GPU nodes, enabling reliable and consistent job delivery [1].</p>
+      </div>
+      <div class="feature-card">
+        <h3>Industry-Standard Formats</h3>
+        <p>Seamless integration with existing EDA workflows through native support for <strong>GDS/OASIS</strong> layout files and <strong>CD-SEM</strong> calibration data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WORKFLOW ═════════════════════════════════════════════════ -->
+<section id="workflow" class="alt-bg">
+  <div class="container">
+    <div class="section-label">Platform Architecture</div>
+    <h2 class="section-title">Complete Correction Workflow</h2>
+    <p>OPC+ integrates three essential modules into a unified, automated pipeline. Each module can be configured independently or combined to match the requirements of a specific fabrication process.</p>
+
+    <div class="workflow-modules">
+      <div class="module-card">
+        <div class="module-num">1</div>
+        <h3>OPC Correction</h3>
+        <p>Advanced full-mask inverse lithography with contour-based L2 optimization. Achieves holistic pattern fidelity superior to traditional EPE rule-based correction [3][8].</p>
+      </div>
+      <div class="module-card">
+        <div class="module-num">2</div>
+        <h3>Aerial Image Simulation</h3>
+        <p>High-fidelity imaging simulation incorporating user-defined scanner parameters: exposure wavelength, numerical aperture (NA), spatial resolution, and illumination source configuration [7].</p>
+      </div>
+      <div class="module-card">
+        <div class="module-num">3</div>
+        <h3>Physical Model Calibration</h3>
+        <p>Analytical imaging models fitted to actual lithography process data using CD-SEM measurements. Accounts for scanner-specific, resist, and process variations [3].</p>
+      </div>
+    </div>
+
+    <div class="diagram-wrap">
+      <div class="mermaid">
+flowchart LR
+    A["Upload Layout&#10;GDS / OASIS"] --> B["Configure Scanner&#10;Parameters"]
+    B --> C{"CD-SEM Calibration&#10;Data Available?"}
+    C -->|Yes| D["Physical Model&#10;Calibration"]
+    C -->|No| E["GPU-Accelerated&#10;ILT Processing"]
+    D --> E
+    E --> F["Global Inverse&#10;Optimization"]
+    F --> G["Curvilinear Mask&#10;Generation"]
+    G --> H["Download Corrected&#10;Mask (GDS / OASIS)"]
+
+    style A fill:#2E86AB,stroke:#1B6CA8,color:#fff
+    style E fill:#1B998B,stroke:#157A6E,color:#fff
+    style H fill:#E84855,stroke:#C23B45,color:#fff
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TECHNICAL COMPARISON ════════════════════════════════════ -->
+<section id="comparison">
+  <div class="container">
+    <div class="section-label">Technical Analysis</div>
+    <h2 class="section-title">OPC+ vs. Traditional OPC: A Complete Comparison</h2>
+    <p>A systematic comparison of OPC+ Cloud against conventional on-premises OPC tools across architecture, performance, and business dimensions.</p>
+
+    <div class="table-scroll" style="margin-top:1.5rem;">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th style="width:20%">Category</th>
+            <th style="width:28%">Traditional OPC</th>
+            <th style="width:28%">OPC+ Cloud</th>
+            <th style="width:24%">Business Benefit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Mask Geometry Support</strong></td><td>Manhattan-based (rectilinear only)</td><td>Native curvilinear and freeform</td><td>Preserves optical phase and device performance</td></tr>
+          <tr><td><strong>Design Conversion</strong></td><td>Requires polygon fracturing / Manhattanization</td><td>No geometry approximation required</td><td>Eliminates layout-induced performance loss</td></tr>
+          <tr><td><strong>Optimization Method</strong></td><td>Local rule-based or windowed EPE</td><td>Global full-mask inverse optimization</td><td>Higher pattern fidelity and CD uniformity</td></tr>
+          <tr><td><strong>GPU Utilization</strong></td><td>Limited or static GPU assignment</td><td>Cost-performance-aware dynamic allocation</td><td>Optimal cost vs. throughput tradeoff</td></tr>
+          <tr><td><strong>Parallelism</strong></td><td>Limited job-level parallelism</td><td>CUDA Multi-Stream image-level parallelism</td><td>Faster processing of large layouts</td></tr>
+          <tr><td><strong>Workload Scheduling</strong></td><td>Static or FIFO</td><td>Two-tier dynamic scheduling</td><td>Balanced execution across heterogeneous GPUs</td></tr>
+          <tr><td><strong>Turnaround Predictability</strong></td><td>Variable, bottleneck-prone</td><td>&lt;2% execution imbalance across nodes</td><td>Reliable delivery schedules</td></tr>
+          <tr><td><strong>Deployment Model</strong></td><td>On-premises only</td><td>Public, private, or hybrid cloud</td><td>Fits foundry security and IT policies</td></tr>
+          <tr><td><strong>Manufacturing Validation</strong></td><td>Logic-centric benchmarks</td><td>Validated on photonics and metasurfaces</td><td>Proven beyond digital CMOS</td></tr>
+          <tr><td><strong>Future Readiness</strong></td><td>Limited for curvilinear CMOS</td><td>Ready for next-generation curvilinear nodes</td><td>Enables new process node offerings</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GETTING STARTED ══════════════════════════════════════════ -->
+<section id="getting-started" class="alt-bg">
+  <div class="container">
+    <div class="section-label">Getting Started</div>
+    <h2 class="section-title">How to Use OPC+ Cloud Platform</h2>
+
+    <h3 class="subsection-title" style="margin-top:0;">Prerequisites</h3>
+    <ul class="prereq-list">
+      <li>Target layout file in <strong>GDS or OASIS</strong> format</li>
+      <li>Scanner parameters (exposure wavelength, numerical aperture, illumination configuration)</li>
+      <li><em>(Optional)</em> CD-SEM calibration data for physical model fitting</li>
+    </ul>
+
+    <h3 class="subsection-title">Step-by-Step</h3>
+    <ol class="steps">
+      <li>
+        <strong>Access the Platform</strong><br />
+        Navigate to <a href="https://nycu-opcplatform.ddns.net/" target="_blank">https://nycu-opcplatform.ddns.net/</a>
+        and register an account. The platform supports both English and Traditional Chinese interfaces.
+        <div class="figure-wrap" style="margin:1.25rem 0 0;">
+          <img src="assets/platform_login.png" alt="OPC+ Platform Login Page" style="border:1px solid var(--border);" />
+          <p class="fig-caption">Figure 5. OPC+ web portal login page. Language can be toggled from the top-right menu.</p>
+        </div>
+      </li>
+      <li><strong>Upload Your Design</strong><br />Upload your target layout file (GDS/OASIS) and enter the scanner parameters for your fabrication process.</li>
+      <li><strong>Configure Calibration</strong> <em>(Optional)</em><br />Upload CD-SEM measurement data if physical model calibration is required for your specific fabrication environment.</li>
+      <li><strong>Submit and Monitor</strong><br />Submit your job to the GPU cluster. Track processing progress in real time through the web dashboard.</li>
+      <li><strong>Download Results</strong><br />Retrieve the corrected mask layout (GDS/OASIS), ready for mask writing and manufacturing.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══ USE CASES ════════════════════════════════════════════════ -->
+<section id="applications">
+  <div class="container">
+    <div class="section-label">Applications</div>
+    <h2 class="section-title">Target Applications</h2>
+    <div class="usecase-grid">
+      <div class="usecase-card">
+        <h3>Semiconductor Manufacturing</h3>
+        <ul>
+          <li>Advanced process node development (7 nm, 5 nm, 3 nm and beyond)</li>
+          <li>Semiconductor foundries and mask shops</li>
+          <li>Fabless design houses</li>
+          <li>Research and development laboratories</li>
+        </ul>
+      </div>
+      <div class="usecase-card">
+        <h3>Photonic Integrated Circuits</h3>
+        <ul>
+          <li>Silicon photonic waveguides and ring resonators</li>
+          <li>Apodized grating couplers</li>
+          <li>Metasurfaces and metalenses</li>
+          <li>Curvilinear photonic patterns</li>
+        </ul>
+      </div>
+      <div class="usecase-card">
+        <h3>Research &amp; Prototyping</h3>
+        <ul>
+          <li>Rapid design iteration and process exploration</li>
+          <li>Academic research in computational lithography</li>
+          <li>High-volume manufacturing tape-out support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DEPLOYMENT ═══════════════════════════════════════════════ -->
+<section id="deployment" class="alt-bg">
+  <div class="container">
+    <div class="section-label">Infrastructure</div>
+    <h2 class="section-title">Flexible Deployment Models</h2>
+    <p>OPC+ offers three deployment configurations to accommodate varying security, performance, and budgetary requirements.</p>
+    <div class="deploy-grid">
+      <div class="deploy-card">
+        <div class="deploy-card-header public">Public Cloud</div>
+        <div class="deploy-card-body">
+          <h3>Public Cloud</h3>
+          <p>Managed cluster of <strong>12+ GPUs</strong> with optimal job scheduling and resource utilization.</p>
+          <p>No infrastructure management or maintenance overhead.</p>
+          <div class="best-for">Recommended for: Startups, research labs, rapid prototyping</div>
+        </div>
+      </div>
+      <div class="deploy-card">
+        <div class="deploy-card-header private">Private Cloud</div>
+        <div class="deploy-card-body">
+          <h3>Private Cloud</h3>
+          <p>Custom on-premises deployment with <strong>maximum IP security</strong> and data isolation.</p>
+          <p>Dedicated resources with full administrative control.</p>
+          <div class="best-for">Recommended for: Large enterprises, sensitive IP projects</div>
+        </div>
+      </div>
+      <div class="deploy-card">
+        <div class="deploy-card-header hybrid">Hybrid Model</div>
+        <div class="deploy-card-body">
+          <h3>Hybrid Model</h3>
+          <p>Combines public and private infrastructure with <strong>configurable resource allocation</strong> per workload sensitivity.</p>
+          <p>Balances cost, performance, and data security requirements.</p>
+          <div class="best-for">Recommended for: Organizations with variable workload demands</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ VALIDATION ═══════════════════════════════════════════════ -->
+<section id="validation">
+  <div class="container">
+    <div class="section-label">Credibility</div>
+    <h2 class="section-title">Industry Validation &amp; Partnerships</h2>
+    <p>
+      OPC+ is developed by the <strong>National Yang Ming Chiao Tung University (NYCU)</strong> research team
+      and has been validated through collaborative engagements with leading semiconductor and photonics
+      research institutions. The platform bridges cutting-edge academic research in computational lithography
+      with real-world industrial fabrication requirements [1][2].
+    </p>
+    <div class="partner-list">
+      <div class="partner-pill">Taiwan Semiconductor Research Institute (TSRI)</div>
+      <div class="partner-pill">University of Southampton, UK</div>
+    </div>
+    <p style="margin-top:1.5rem; font-size:0.9rem; color:var(--text-muted);">
+      Supported by the <strong>National Science and Technology Council (NSTC)</strong>, Taiwan.
+    </p>
+  </div>
+</section>
+
+<!-- ══ DEMO ═════════════════════════════════════════════════════ -->
+<section id="demo" class="alt-bg">
+  <div class="container">
+    <div class="section-label">Platform Access</div>
+    <h2 class="section-title">Demo &amp; Access</h2>
+    <div class="demo-inner">
+      <div class="demo-actions">
+        <a href="https://nycu-opcplatform.ddns.net/" target="_blank" class="demo-btn demo-btn-primary">Launch Platform</a>
+        <a href="https://youtu.be/r_czE7M4en0" target="_blank" class="demo-btn demo-btn-secondary">Watch Demo Video</a>
+      </div>
+      <div class="demo-info">
+        <h3>OPC+ Cloud Platform</h3>
+        <p>
+          The platform is currently available for research and professional use. Register directly at the
+          platform portal, or contact the team below to discuss access for industrial applications.
+        </p>
+        <div class="demo-url">https://nycu-opcplatform.ddns.net/</div>
+        <p class="nstc-note">Supported by the National Science and Technology Council (NSTC), Taiwan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ REFERENCES ═══════════════════════════════════════════════ -->
+<section id="references">
+  <div class="container">
+    <div class="section-label">Literature</div>
+    <h2 class="section-title">References</h2>
+    <p style="margin-bottom:1.5rem;">The following publications document the research and validation underpinning the OPC+ platform.</p>
+
+    <div class="ref-group">
+      <div class="ref-group-title">Research Publications</div>
+      <ul class="ref-list">
+        <li><span class="ref-num">[1]</span> S.-Y. Wang et al., "Providing optimal optical proximity correction cloud services for the semiconductor industry," in <em>IEEE International Conference on Cloud Computing Technology and Science (CloudCom)</em>, IEEE, 2025.</li>
+        <li><span class="ref-num">[2]</span> H.-L. Liu et al., "Intelligent proximity correction enabled large-area metasurfaces by KrF photolithography," <em>IEEE Access</em>, vol. 13, pp. 195517–195525, 2025.</li>
+        <li><span class="ref-num">[3]</span> P.-H. Fang and P. Yu, "Tackling data inconsistency and runtime issues in inverse lithography technology (ILT) with comparative convergence study," in <em>DTCO and Computational Patterning III</em>, vol. 12954, SPIE, 2024, p. 129541E.</li>
+        <li><span class="ref-num">[4]</span> K.-H. Wang, P.-H. Fang, and P. Yu, "Practical inverse mask synthesis via data-efficient physics-informed neural networks (PINN) model," in <em>DTCO and Computational Patterning IV</em>, vol. 13425, SPIE, 2025.</li>
+        <li><span class="ref-num">[5]</span> P.-H. Fang, Y.-S. Chen, J.-S. Wu, and P. Yu, "Inverse reticle optimization with quantum annealing and hybrid solvers," <em>IEEE Access</em>, vol. 12, pp. 33069–33078, 2024.</li>
+      </ul>
+    </div>
+
+    <div class="ref-group">
+      <div class="ref-group-title">Foundational References</div>
+      <ul class="ref-list">
+        <li><span class="ref-num">[6]</span> L. Pang, "Inverse lithography technology: 30 years from concept to practical, full-chip reality," <em>Journal of Micro/Nanopatterning, Materials, and Metrology</em>, vol. 20, no. 3, pp. 030901–030901, 2021.</li>
+        <li><span class="ref-num">[7]</span> C. Mack, <em>Fundamental Principles of Optical Lithography: The Science of Microfabrication</em>. John Wiley &amp; Sons, 2007.</li>
+        <li><span class="ref-num">[8]</span> Y. Shen, N. Wong, and E. Y. Lam, "Level-set-based inverse lithography for photomask synthesis," <em>Optics Express</em>, vol. 17, no. 26, pp. 23690–23701, 2009.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══════════════════════════════════════════════════ -->
+<section id="contact" class="alt-bg">
+  <div class="container">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Get in Touch</h2>
+    <p>Interested in accessing the OPC+ Cloud Platform or exploring research collaboration? Contact the team below.</p>
+
+    <div class="contact-grid" style="margin-top:1.5rem;">
+      <div>
+        <table class="contact-table">
+          <tr><td>Principal Investigator</td><td><a href="https://nycu-pal.com/pi.html" target="_blank">Prof. Peichen Yu</a></td></tr>
+          <tr><td>Email</td><td><a href="mailto:peichen.yu@nycu.edu.tw">peichen.yu@nycu.edu.tw</a></td></tr>
+          <tr><td>Phone</td><td>+886-3-5712121 ext. 56357</td></tr>
+          <tr><td>Platform</td><td><a href="https://nycu-opcplatform.ddns.net/" target="_blank">nycu-opcplatform.ddns.net</a></td></tr>
+        </table>
+      </div>
+      <div>
+        <table class="contact-table">
+          <tr><td>PAL Lab</td><td><a href="https://nycu-pal.com/" target="_blank">Photonics &amp; Advanced Lithography</a></td></tr>
+          <tr><td>NSL Lab</td><td><a href="https://nsl.cs.nycu.edu.tw" target="_blank">Network and System Laboratory</a></td></tr>
+          <tr><td>Institution</td><td><a href="https://www.nycu.edu.tw/" target="_blank">National Yang Ming Chiao Tung University</a></td></tr>
+          <tr><td>Address</td><td>No. 1001 University Road, East District, Hsinchu City 300, Taiwan</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═══════════════════════════════════════════════════ -->
+<footer>
+  <p>
+    <strong style="color:#fff;">OPC+ Cloud Platform</strong> &nbsp;·&nbsp;
+    Developed by the NYCU OPC Research Team &nbsp;·&nbsp; Department of Photonics &nbsp;·&nbsp; Hsinchu, Taiwan
+  </p>
+  <p style="margin-top:0.4rem;">
+    Supported by the <a href="https://www.nstc.gov.tw/" target="_blank">National Science and Technology Council (NSTC)</a>, Taiwan &nbsp;·&nbsp;
+    <a href="https://nycu-pal.com/" target="_blank">PAL Lab</a> &nbsp;·&nbsp;
+    <a href="https://www.nycu.edu.tw/" target="_blank">NYCU</a>
+  </p>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  document.getElementById('navToggle').addEventListener('click', function () {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+  // Close mobile nav on link click
+  document.querySelectorAll('.nav-links a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      document.getElementById('navLinks').classList.remove('open');
+    });
+  });
+  // Initialize Mermaid
+  mermaid.initialize({ startOnLoad: true, theme: 'default', flowchart: { curve: 'basis' } });
+</script>
+
+</body>
+</html>

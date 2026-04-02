@@ -1,377 +1,347 @@
 <div align="center">
 
-![OPC+ Platform Banner](https://raw.githubusercontent.com/FangPoHsun/opc-cloud-platform/main/assets/opc_platform_banner.png)
+![OPC+ Platform Banner](assets/opc_platform_banner.png)
 
-# 🚀 OPC+ Cloud Platform
+# OPC+ Cloud Platform
 
-*Developed by [PAL Lab](https://nycu-pal.com/) at National Yang Ming Chiao Tung University*
+**Cloud-Based Freeform Mask Correction Platform**
 
-### **Next-Generation GPU-Accelerated Freeform Mask Correction**
+*Next-Generation GPU-Accelerated OPC for Semiconductor & Photonics*
 
-*Accelerate | Automate | Innovate*
+Developed by [PAL Lab](https://nycu-pal.com/) · National Yang Ming Chiao Tung University
 
-[![Cloud Native](https://img.shields.io/badge/Cloud-Native-blue?style=for-the-badge&logo=kubernetes)](https://kubernetes.io/)
-[![GPU Accelerated](https://img.shields.io/badge/GPU-Accelerated-green?style=for-the-badge&logo=nvidia)](https://www.nvidia.com/en-us/data-center/gpu-cloud-computing/)
-[![50x Faster](https://img.shields.io/badge/Speed-50x_Faster-red?style=for-the-badge)](https://github.com)
-[![Freeform Support](https://img.shields.io/badge/Freeform-Curvilinear-purple?style=for-the-badge)](https://github.com)
+[![Cloud Native](https://img.shields.io/badge/Cloud-Native-0078D4?style=flat-square&logo=kubernetes)](https://kubernetes.io/)
+[![GPU Accelerated](https://img.shields.io/badge/GPU-Accelerated-76B900?style=flat-square&logo=nvidia)](https://www.nvidia.com/en-us/data-center/gpu-cloud-computing/)
+[![50x Faster](https://img.shields.io/badge/Speed-50×_Faster-C0392B?style=flat-square)](https://github.com/FangPoHsun/opc-cloud-platform)
+[![Freeform Support](https://img.shields.io/badge/Mask-Curvilinear_Support-7D3C98?style=flat-square)](https://github.com/FangPoHsun/opc-cloud-platform)
 
----
-
-### **Revolutionizing Optical Proximity Correction (OPC) and Inverse Lithography Technology (ILT)**
+*Accelerate · Automate · Innovate*
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [Overview](#-overview)
-- [Key Features](#-key-features)
-- [Why OPC+?](#-why-opc)
-- [Technical Specifications](#-technical-specifications)
-- [Use Cases](#-use-cases)
-- [Deployment Models](#-deployment-models)
-- [Getting Started](#-getting-started)
-- [Workflow](#-workflow)
-- [Industry Validation](#-industry-validation)
-- [Contact](#-contact)
-
----
-
-## 🌟 Overview
-
-**OPC+** is a revolutionary cloud-native platform that transforms the landscape of mask correction for semiconductor manufacturing and advanced silicon photonics. By harnessing the power of **GPU acceleration**, OPC+ delivers a **50x speed improvement** over traditional CPU-based solutions while eliminating the need for expensive on-premise hardware and complex licensing.
-
-Designed for both industry professionals and research institutions, OPC+ makes advanced mask correction accessible to everyone through an intuitive web interface—**no deep OPC expertise required**.
-
-### 🎯 What Makes OPC+ Different?
-
-- **⚡ 50x GPU Acceleration**: Complete corrections in minutes, not hours
-- **☁️ Zero Hardware Investment**: Access powerful GPU clusters through the cloud
-- **🎨 Native Freeform Support**: Handle curvilinear masks without polygonal approximation
-- **🖥️ "OPC for Everyone" Interface**: Simple, intuitive GUI for all skill levels
-- **🔒 Flexible Deployment**: Public, private, or hybrid cloud options
+- [Background](#background)
+- [The OPC+ Solution](#the-opc-solution)
+- [Experimental Results](#experimental-results)
+- [Key Features](#key-features)
+- [Complete Correction Workflow](#complete-correction-workflow)
+- [Technical Comparison](#technical-comparison)
+- [Getting Started](#getting-started)
+- [Use Cases](#use-cases)
+- [Deployment Models](#deployment-models)
+- [Industry Validation](#industry-validation)
+- [Platform Demo & Access](#platform-demo--access)
+- [Contact](#contact)
 
 ---
 
-## ✨ Key Features
+## Background
 
-### 🚄 **Unprecedented Speed**
-Leverage massive GPU parallelism with CUDA Multi-Stream technology to achieve **50x faster** mask correction compared to traditional CPU-based methods. What used to take hours now takes minutes.
+### What Is Optical Proximity Correction (OPC)?
 
-### ☁️ **Cloud-Native Architecture**
-Built on Kubernetes with elastic resource scaling, OPC+ dynamically allocates GPU resources across public, private, or hybrid cloud environments. No expensive hardware purchases or maintenance required.
+Semiconductor and photonic devices are fabricated by projecting light through a patterned mask onto a photosensitive wafer—a process called **photolithography**. Because the wavelength of the exposure source is comparable to, or larger than, the minimum feature sizes being printed, **optical diffraction** causes the projected image to deviate systematically from the intended design: corners round off, line widths shift, and isolated features may fail to print entirely.
 
-### 🎨 **True Freeform & Curvilinear Support**
-Unlike traditional tools that force curved designs into Manhattan geometries, OPC+ natively supports **curvilinear masks**, preserving optical phase and device performance—essential for next-generation photonics.
-
-### 🖱️ **Intuitive User Interface**
-Our "OPC for Everyone" GUI removes the complexity barrier. Simply upload your layout, configure scanner parameters, and let OPC+ handle the rest. No scripting or deep technical knowledge required.
-
-### 🔧 **Global Inverse Optimization**
-Advanced ILT algorithms with native curvilinear mask generation ensure superior CD (Critical Dimension) uniformity and pattern fidelity compared to rule-based OPC.
-
-### 📊 **Predictable Performance**
-High-efficiency execution with **<2% load imbalance** across GPU nodes ensures reliable delivery schedules and consistent results.
-
-### 🔌 **Industry-Standard Formats**
-Seamless integration with your existing workflow through support for **GDS/OASIS** layout files and **CD-SEM** calibration data.
-
----
-
-## 💡 Why OPC+?
+**Optical Proximity Correction (OPC)** is the pre-distortion technique applied to the mask layout to compensate for these optical and process-induced effects, so that the final printed pattern on the wafer faithfully reproduces the designer's intent.
 
 <div align="center">
 
-![Traditional vs GPU-Accelerated OPC](https://raw.githubusercontent.com/FangPoHsun/opc-cloud-platform/main/assets/workflow_comparison.png)
+![OPC Concept: Target vs. OPC Mask](assets/pattern_comparison.png)
+
+*Figure 1. Comparison of a target layout (without correction) and an OPC-corrected mask. The pre-distorted mask compensates for diffraction so that the wafer image matches the intended design.*
 
 </div>
 
-### Traditional OPC Challenges
+### Why Is Traditional OPC Insufficient?
 
-| Challenge | Traditional Approach | OPC+ Solution |
-|-----------|---------------------|---------------|
-| **Speed** | Slow CPU processing | 50x faster with GPU acceleration |
-| **Cost** | Expensive per-core licensing | Flexible cloud consumption model |
-| **Hardware** | Large upfront investment | Zero hardware—cloud native |
-| **Complexity** | Requires deep expertise | Intuitive "OPC for Everyone" GUI |
-| **Curved Designs** | Forced Manhattanization | Native freeform support |
-| **Scalability** | Limited by local resources | Elastic cloud scaling |
+Conventional OPC tools rely on CPU-based, rule-driven solvers designed for **Manhattan geometries** (rectilinear, axis-aligned shapes). They present three fundamental limitations as the industry advances:
 
-### Benefits
-
-✅ **Eliminate Bottlenecks**: Move away from slow CPU processing  
-✅ **Lower Entry Barriers**: Perfect for startups and research labs  
-✅ **Enhanced Performance**: Preserve optical phase in curved photonic designs  
-✅ **Cost-Effective**: Pay only for what you use  
-✅ **Higher Fidelity**: Superior CD uniformity and pattern accuracy  
-✅ **Global Access**: Work from anywhere with internet connectivity  
+| Limitation | Impact |
+|---|---|
+| **Speed** | CPU-bound serial processing makes large-layout corrections extremely time-consuming—often taking hours per job |
+| **Cost & Accessibility** | Commercial licenses are prohibitively expensive and operation requires specialized expertise, excluding startups and research institutions |
+| **Geometry Constraints** | Emerging applications in photonic integrated circuits and next-generation curvilinear CMOS nodes require freeform mask geometries that traditional tools cannot handle natively—forcing lossy polygonal approximation |
 
 ---
 
-## 📊 Results & Performance
+## The OPC+ Solution
 
-### Pattern Fidelity Comparison
+OPC+ is a **cloud-native, GPU-accelerated** platform that democratizes advanced mask correction. By replacing CPU-bound solvers with massively parallel GPU computation and wrapping the entire workflow in an intuitive web interface, OPC+ removes the barriers of traditional tools while extending OPC capabilities to cutting-edge photonic and semiconductor applications.
 
-OPC+ delivers exceptional pattern fidelity for complex freeform shapes, preventing the blurring and distortion common in traditional approaches.
+The platform is built around three principles:
+
+- **Speed**: CUDA Multi-Stream parallelism delivers 50× faster correction than CPU-based solvers \[5\]
+- **Accessibility**: A web-based GUI requires no scripting or deep OPC expertise — upload a layout, configure parameters, and submit
+- **Generality**: Native curvilinear mask support enables OPC beyond digital CMOS, validated on photonic integrated circuits and metasurfaces \[2\]\[3\]
+
+---
+
+## Experimental Results
+
+The following Scanning Electron Microscope (SEM) images present fabricated device results demonstrating the direct, measurable impact of OPC correction on real photonic structures.
+
+### Line Pattern — Line End Shortening
+
+Without OPC correction, diffraction at the tips of line features causes the printed ends to **recede inward**, resulting in lines that are shorter than the target design. This line end shortening effect introduces critical dimension (CD) error along the line length axis. OPC pre-compensation extends the mask geometry at line ends so that the fabricated result matches the intended length.
 
 <div align="center">
 
-![Pattern Fidelity Comparison](https://raw.githubusercontent.com/FangPoHsun/opc-cloud-platform/main/assets/pattern_comparison.png)
+| Without OPC | With OPC |
+|:-----------:|:--------:|
+| ![Line pattern without OPC](assets/SEM%20Comparison/NoOPC/Line.jpg) | ![Line pattern with OPC](assets/SEM%20Comparison/WithOPC/Line.jpg) |
+| Line end shortening visible; printed length undershoots target | Line ends accurately reproduced; CD along length axis restored |
 
-*Comparison of target layout vs. OPC-corrected mask showing improved pattern accuracy for freeform geometries*
+*Figure 3. SEM images of fabricated line patterns. Scale bar: 5 µm.*
 
 </div>
 
-### Complete Correction Workflow
+### Ring Resonator — Defect Elimination
 
-Our platform implements a comprehensive 3-step correction process: OPC Correction → Aerial Image Simulation → Physical Model Calibration, with experimental validation showing elimination of critical defects.
+For photonic ring resonators, OPC correction is critical to device functionality. Without correction, the coupling gap region fails to open properly—a fatal defect for optical performance. With OPC, the waveguide geometry is accurately reproduced and the device is fully functional.
 
 <div align="center">
 
-![Technical Workflow](https://raw.githubusercontent.com/FangPoHsun/opc-cloud-platform/main/assets/technical_diagram.png)
+| Without OPC | With OPC |
+|:-----------:|:--------:|
+| ![Ring resonator without OPC](assets/SEM%20Comparison/NoOPC/Ring.png) | ![Ring resonator with OPC](assets/SEM%20Comparison/WithOPC/Ring.png) |
+| Critical defect: lower photoresist layer not opened (circled) | Clean fabrication: coupling region fully resolved |
 
-*Complete correction workflow with SEM validation showing defect elimination (w/ OPC vs. w/o OPC)*
+*Figure 4. SEM images of fabricated ring resonators. Scale bar: 5 µm (overview), 1 µm (inset).*
 
 </div>
 
-### Comprehensive Comparison
+---
 
-| Category | Traditional OPC | OPC+ Cloud | Business Benefit |
-|----------|----------------|------------|------------------|
-| **Mask Geometry Support** | Manhattan-based (rectilinear only) | Native curvilinear and freeform masks | Preserves optical phase and device performance |
-| **Design Conversion** | Requires polygon fracturing / Manhattanization | No geometry approximation required | Eliminates layout-induced performance loss |
-| **Optimization Method** | Local rule-based or windowed optimization | Global inverse optimization | Higher pattern fidelity and CD uniformity |
-| **GPU Utilization** | Limited or static GPU assignment | Cost-performance–aware GPU allocation | Optimal cost vs. throughput tradeoff |
-| **Parallelism** | Limited job-level parallelism | CUDA Multi-Stream image-level parallelism | Faster processing of large layouts |
-| **Workload Scheduling** | Static or FIFO | Two-tier dynamic scheduling | Balanced execution across heterogeneous GPUs |
-| **Turnaround Time Predictability** | Variable, bottleneck-prone | <2% execution imbalance across nodes | Reliable delivery schedules |
-| **Deployment Model** | On-prem only | Public, private, or hybrid cloud | Fits foundry security and IT policies |
-| **Manufacturing Validation** | Logic-centric benchmarks | Validated on photonics and metasurfaces | Proven beyond digital CMOS |
-| **Future Readiness** | Limited for curvilinear CMOS | Ready for next-generation curvilinear nodes | Enables new process offerings |
+## Key Features
 
-### Key Performance Metrics
+### GPU Acceleration
 
-- ⚡ **50x Speed Improvement**: Reduce correction time from hours to minutes
-- 🎯 **<2% Load Imbalance**: Consistent, predictable performance across GPU nodes
-- 📐 **Superior CD Uniformity**: Enhanced critical dimension control
-- 🔄 **Native Curvilinear Support**: Preserve optical phase in photonic designs
-- ✅ **Proven Results**: Validated by leading semiconductor research institutions
+Leveraging CUDA Multi-Stream image-level parallelism, OPC+ achieves **50× faster** mask correction compared to traditional CPU-based methods. Jobs that previously required hours complete in minutes, enabling rapid design iteration.
+
+### Cloud-Native Architecture
+
+Built on Kubernetes with elastic resource scheduling, OPC+ dynamically allocates GPU resources across public, private, or hybrid cloud environments. No capital expenditure on hardware, no maintenance overhead.
+
+### Native Freeform and Curvilinear Mask Support
+
+Unlike traditional tools that force curved designs into rectilinear approximations, OPC+ natively generates **curvilinear masks**—preserving optical phase, waveguide coupling efficiency, and device performance for photonic applications.
+
+### Accessible Interface — "OPC for Everyone"
+
+Upload a target layout (GDS/OASIS), configure scanner parameters, and submit. The platform handles the rest. No scripting, no deep OPC expertise required. Suitable for both experienced lithography engineers and researchers new to mask correction.
+
+### Global Inverse Optimization
+
+The correction engine uses full-mask **inverse lithography technology (ILT)** with contour-based L2 optimization, achieving superior pattern fidelity and CD uniformity compared to rule-based windowed correction approaches.
+
+### Predictable Turnaround Time
+
+Two-tier dynamic workload scheduling maintains **less than 2% execution imbalance** across heterogeneous GPU nodes, enabling reliable and consistent job delivery.
+
+### Industry-Standard Format Support
+
+Seamless integration with existing EDA workflows through native support for **GDS/OASIS** layout files and **CD-SEM** calibration data.
 
 ---
 
-## 🔧 Technical Specifications
+## Complete Correction Workflow
 
-### Algorithm & Processing
-- **Core Technology**: Global inverse optimization (ILT)
-- **Mask Generation**: Native curvilinear mask support
-- **Parallelism**: CUDA Multi-Stream image-level parallelism
-- **Scheduling**: Two-tier dynamic job scheduling
-- **Load Balancing**: <2% imbalance across GPU nodes
+OPC+ integrates three essential modules into a unified, automated pipeline:
 
-### Supported Formats
-- **Input**: GDS/OASIS layout files
-- **Calibration**: CD-SEM data integration
-- **Output**: Manufacturing-ready corrected masks
+### 1. OPC Correction (Mask Correction)
 
-### Infrastructure
-- **Orchestration**: Kubernetes-managed clusters
-- **GPU Resources**: 12+ GPUs in public cloud
-- **Deployment**: Public, private, or hybrid models
-- **Scaling**: Dynamic elastic resource allocation
+Advanced full-mask inverse lithography with contour-based L2 optimization. Achieves holistic pattern fidelity superior to traditional edge-placement error (EPE) rule-based correction.
 
----
+### 2. Aerial Image Simulation (Computational Lithography)
 
-## 🎯 Use Cases
+High-fidelity imaging simulation incorporating user-defined scanner parameters: exposure wavelength, numerical aperture (NA), spatial resolution, and illumination source configuration.
 
-### 🔬 Semiconductor Manufacturing
-- Advanced process node development (7nm, 5nm, 3nm and beyond)
-- Foundries and mask shops
-- Fabless design houses
-- Research and development labs
+### 3. Physical Model Calibration
 
-### 💎 Photonic Integrated Circuits (PICs)
-- Curvilinear photonics patterns
-- Apodized grating couplers
-- Metasurfaces and metalenses
-- Micro-ring resonators
-- Silicon photonics devices
-
-### 🏭 Industry Applications
-- High-volume manufacturing
-- Rapid prototyping
-- Design exploration
-- Process optimization
-
----
-
-## 🌐 Deployment Models
-
-OPC+ offers flexible deployment options to meet your security and performance requirements:
-
-<table>
-<tr>
-<td width="33%" valign="top">
-
-### ☁️ Public Cloud
-- Access a cluster of **12+ GPUs**
-- Optimal job scheduling and resource utilization
-- No infrastructure management
-- **Ideal for**: Startups, research labs, and rapid prototyping
-
-</td>
-<td width="33%" valign="top">
-
-### 🔒 Private Cloud
-- Custom on-premise deployment
-- Maximum IP security and data control
-- Dedicated resources
-- **Ideal for**: Large enterprises and sensitive projects
-
-</td>
-<td width="33%" valign="top">
-
-### 🔄 Hybrid Model
-- Blend public resources with private infrastructure
-- Balance cost, performance, and security
-- Flexible resource allocation
-- **Ideal for**: Organizations with varying workload demands
-
-</td>
-</tr>
-</table>
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Target layout file (GDS/OASIS format)
-- Scanner parameters
-- (Optional) CD-SEM calibration data
-
-### Quick Start
-
-1. **Access the Platform**
-   - Navigate to the OPC+ web portal
-   - Create an account or log in
-
-2. **Upload Your Design**
-   - Upload your target layout (GDS/OASIS)
-   - Configure scanner parameters
-
-3. **Configure Correction**
-   - (Optional) Upload CD-SEM calibration data
-   - Select correction parameters
-
-4. **Run Correction**
-   - Submit your job to the GPU cluster
-   - Monitor progress in real-time
-
-5. **Download Results**
-   - Retrieve your corrected mask layout
-   - Ready for manufacturing!
-
-### Example Workflow
-```
-Input Layout (GDS/OASIS) → OPC+ Cloud Platform → Corrected Mask
-                              ↓
-                    GPU-Accelerated ILT Processing
-                              ↓
-                    50x Faster Than Traditional OPC
-```
-
----
-
-## 🔄 Workflow
+Analytical imaging models are fitted to actual lithography process data using CD-SEM measurements. Accounts for scanner-specific, resist, and process variations to ensure accurate predictive modeling tailored to a specific fabrication environment.
 
 ```mermaid
-graph LR
-    A[Upload Layout<br/>GDS/OASIS] --> B[Configure<br/>Parameters]
-    B --> C{Calibration<br/>Data?}
-    C -->|Yes| D[Upload CD-SEM<br/>Data]
-    C -->|No| E[GPU-Accelerated<br/>ILT Processing]
+flowchart LR
+    A["Upload Layout<br>GDS / OASIS"] --> B["Configure Scanner<br>Parameters"]
+    B --> C{"CD-SEM Calibration<br>Data Available?"}
+    C -->|Yes| D["Physical Model<br>Calibration"]
+    C -->|No| E["GPU-Accelerated<br>ILT Processing"]
     D --> E
-    E --> F[Inverse<br/>Optimization]
-    F --> G[Curvilinear<br/>Mask Generation]
-    G --> H[Download<br/>Corrected Mask]
-    
-    style A fill:#4CAF50,stroke:#2E7D32,color:#fff
-    style E fill:#2196F3,stroke:#1565C0,color:#fff
-    style H fill:#FF9800,stroke:#E65100,color:#fff
+    E --> F["Global Inverse<br>Optimization"]
+    F --> G["Curvilinear Mask<br>Generation"]
+    G --> H["Download Corrected<br>Mask (GDS / OASIS)"]
+
+    style A fill:#2E86AB,stroke:#1B6CA8,color:#fff
+    style E fill:#1B998B,stroke:#157A6E,color:#fff
+    style H fill:#E84855,stroke:#C23B45,color:#fff
 ```
 
-### Detailed Process
+---
 
-1. **Input**: Upload target layout and scanner parameters via web portal
-2. **Calibration** (Optional): Integrate CD-SEM data for model refinement
-3. **Processing**: Automated GPU-accelerated correction using inverse lithography
-4. **Output**: Manufacturing-ready corrected mask layout
+## Technical Comparison
+
+| Category | Traditional OPC | OPC+ Cloud | Business Benefit |
+|---|---|---|---|
+| **Mask Geometry Support** | Manhattan-based (rectilinear only) | Native curvilinear and freeform | Preserves optical phase and device performance |
+| **Design Conversion** | Requires polygon fracturing / Manhattanization | No geometry approximation required | Eliminates layout-induced performance loss |
+| **Optimization Method** | Local rule-based or windowed EPE | Global full-mask inverse optimization | Higher pattern fidelity and CD uniformity |
+| **GPU Utilization** | Limited or static GPU assignment | Cost-performance-aware dynamic allocation | Optimal cost vs. throughput tradeoff |
+| **Parallelism** | Limited job-level parallelism | CUDA Multi-Stream image-level parallelism | Faster processing of large layouts |
+| **Workload Scheduling** | Static or FIFO | Two-tier dynamic scheduling | Balanced execution across heterogeneous GPUs |
+| **Turnaround Predictability** | Variable, bottleneck-prone | <2% execution imbalance across nodes | Reliable delivery schedules |
+| **Deployment Model** | On-premises only | Public, private, or hybrid cloud | Fits foundry security and IT policies |
+| **Manufacturing Validation** | Logic-centric benchmarks | Validated on photonics and metasurfaces | Proven beyond digital CMOS |
+| **Future Readiness** | Limited for curvilinear CMOS | Ready for next-generation curvilinear nodes | Enables new process node offerings |
 
 ---
 
-## 🏆 Industry Validation
+## Getting Started
 
-OPC+ is developed by the **National Yang Ming Chiao Tung University (NYCU)** research team and has been validated and trusted by leading institutions worldwide:
+### Prerequisites
 
-<div align="center">
+- Target layout file in **GDS or OASIS** format
+- Scanner parameters (wavelength, NA, illumination configuration)
+- *(Optional)* CD-SEM calibration data for physical model fitting
 
-### Trusted By
+### Step-by-Step
 
-🔬 **TSRI** - Taiwan Semiconductor Research Institute  
-🎓 **University of Southampton, UK**  
-<!-- 🏢 **Cornerstone Research** -->
+1. **Access the Platform**
+   Navigate to [https://nycu-opcplatform.ddns.net/](https://nycu-opcplatform.ddns.net/) and register an account. The platform supports both English and Traditional Chinese interfaces.
 
-</div>
+   <div align="center">
 
-Our platform combines cutting-edge academic research with real-world industrial requirements, ensuring both innovation and reliability.
+   ![OPC+ Platform Login](assets/platform_login.png)
+
+   *Figure 5. OPC+ web portal login page. Select your preferred language from the top-right menu.*
+
+   </div>
+
+2. **Upload Your Design**
+   Upload your target layout file (GDS/OASIS) and enter the scanner parameters for your process.
+
+3. **Configure Calibration** *(Optional)*
+   Upload CD-SEM measurement data if physical model calibration is required for your fabrication environment.
+
+4. **Submit and Monitor**
+   Submit your job to the GPU cluster. Track progress in real time through the web dashboard.
+
+5. **Download Results**
+   Retrieve the corrected mask layout (GDS/OASIS), ready for mask writing and manufacturing.
 
 ---
 
-## 🌐 Platform Access and Demo
+## Use Cases
 
-The OPC+ Cloud Platform is currently available for research and professional use. (Click the ICON below to see to demonstration)
+### Semiconductor Manufacturing
+
+- Advanced process node development (7 nm, 5 nm, 3 nm and beyond)
+- Semiconductor foundries and mask shops
+- Fabless design houses
+- Research and development laboratories
+
+### Photonic Integrated Circuits (PICs)
+
+- Silicon photonic waveguides and ring resonators
+- Apodized grating couplers
+- Metasurfaces and metalenses
+- Curvilinear photonic patterns requiring native freeform correction
+
+### General Applications
+
+- High-volume manufacturing tape-out support
+- Rapid design prototyping and process exploration
+- Academic research in computational lithography
+
+---
+
+## Deployment Models
+
+OPC+ offers flexible deployment options to meet security, performance, and budgetary requirements.
+
+| | Public Cloud | Private Cloud | Hybrid Model |
+|---|---|---|---|
+| **Infrastructure** | Managed 12+ GPU cluster | Custom on-premises deployment | Combined public and private resources |
+| **Data Control** | Standard cloud security | Maximum IP security and data isolation | Configurable per workload sensitivity |
+| **Management** | Fully managed, no overhead | Dedicated resources, full control | Flexible resource allocation |
+| **Best For** | Startups, research labs, rapid prototyping | Large enterprises, sensitive IP projects | Organizations with variable workload demands |
+
+---
+
+## Industry Validation
+
+OPC+ is developed by the **National Yang Ming Chiao Tung University (NYCU)** research team and has been validated through collaborative engagements with leading institutions:
+
+- **Taiwan Semiconductor Research Institute (TSRI)**
+- **University of Southampton, UK**
+
+The platform bridges cutting-edge academic research in computational lithography with real-world industrial fabrication requirements.
+
+---
+
+## Platform Demo & Access
 
 <div align="center">
 
-[![Watch Demo](https://raw.githubusercontent.com/FangPoHsun/opc-cloud-platform/main/assets/LOGO.png)](https://youtu.be/r_czE7M4en0)
+**Click the logo below to watch the platform demonstration.**
 
+[![Watch Demo](assets/LOGO.png)](https://youtu.be/r_czE7M4en0)
 
-*OPC+ Cloud Platform - Professional optical proximity correction service*
+*OPC+ Cloud Platform — GPU-accelerated mask correction service*
 
 </div>
 
-### Getting Access
+**Platform URL**: [https://nycu-opcplatform.ddns.net/](https://nycu-opcplatform.ddns.net/)
 
-1. **Visit the Platform**: [https://nycu-opcplatform.ddns.net/](https://youtu.be/r_czE7M4en0)
-2. **Register**: Create an account for research or professional use
-3. **Start Correcting**: Upload your layouts and experience
+To request access for research or professional use, register directly on the platform or contact the team via the information below.
 
 **Supported by**: National Science and Technology Council (NSTC), Taiwan
 
 ---
 
-## 📞 Contact
+## Contact
 
-Interested in learning more about OPC+ or getting access to the platform?
+| | |
+|---|---|
+| **Principal Investigator** | [Prof. Peichen Yu](https://nycu-pal.com/pi.html) |
+| **Email** | peichen.yu@nycu.edu.tw |
+| **Lab Websites** | [PAL Lab — Photonics & Advanced Lithography](https://nycu-pal.com/) · [NSL Lab — Network and System Laboratory](https://nsl.cs.nycu.edu.tw) |
+| **Platform** | [https://nycu-opcplatform.ddns.net/](https://nycu-opcplatform.ddns.net/) |
+| **Institution** | [National Yang Ming Chiao Tung University (NYCU)](https://www.nycu.edu.tw/) |
+| **Address** | No. 1001 University Road, East District, Hsinchu City 300, Taiwan |
+| **Phone** | +886-3-5712121 ext. 56357 |
 
-- **Principal Investigator**: [Prof. Peichen Yu](https://nycu-pal.com/pi.html)
-- **Email**: peichen.yu@nycu.edu.tw
-- **Lab Website**: [PAL Lab - Photonics & Lithography](https://nycu-pal.com/), [NSL Lab - Network and System Laboratory](https://nsl.cs.nycu.edu.tw)
-- **Platform**: [OPC+ Cloud Platform](https://nycu-opcplatform.ddns.net/)
-- **Institution**: [National Yang Ming Chiao Tung University (NYCU)](https://www.nycu.edu.tw/)
-- **Address**: No.1001 Univ. Rd., East Dist., Hsinchu City 300, Taiwan
+---
+
+## References
+
+The following publications document the research and validation underpinning the OPC+ platform.
+
+**Platform & Cloud Infrastructure & Core Algorithms**
+
+\[1\] S.-Y. Wang et al., "Providing optimal optical proximity correction cloud services for the semiconductor industry," in *IEEE International Conference on Cloud Computing Technology and Science (CloudCom)*, IEEE, 2025.
+
+\[2\] H.-L. Liu et al., "Intelligent proximity correction enabled large-area metasurfaces by KrF photolithography," *IEEE Access*, vol. 13, pp. 195517–195525, 2025.
+
+\[3\] P.-H. Fang and P. Yu, "Tackling data inconsistency and runtime issues in inverse lithography technology (ILT) with comparative convergence study," in *DTCO and Computational Patterning III*, vol. 12954, SPIE, 2024, p. 129541E.
+
+\[4\] K.-H. Wang, P.-H. Fang, and P. Yu, "Practical inverse mask synthesis via data-efficient physics-informed neural networks (PINN) model," in *DTCO and Computational Patterning IV*, vol. 13425, SPIE, 2025.
+
+\[5\] P.-H. Fang, Y.-S. Chen, J.-S. Wu, and P. Yu, "Inverse reticle optimization with quantum annealing and hybrid solvers," *IEEE Access*, vol. 12, pp. 33069–33078, 2024.
+
+**Foundational References**
+
+\[6\] L. Pang, "Inverse lithography technology: 30 years from concept to practical, full-chip reality," *Journal of Micro/Nanopatterning, Materials, and Metrology*, vol. 20, no. 3, pp. 030901–030901, 2021.
+
+\[7\] C. Mack, *Fundamental Principles of Optical Lithography: The Science of Microfabrication*. John Wiley & Sons, 2007.
+
+\[8\] Y. Shen, N. Wong, and E. Y. Lam, "Level-set-based inverse lithography for photomask synthesis," *Optics Express*, vol. 17, no. 26, pp. 23690–23701, 2009.
 
 ---
 
 <div align="center">
 
-###  **Transform Your Mask Correction Workflow Today** 
-
-**OPC+**: Where Speed Meets Precision in the Cloud
-
----
-
-*Developed with ❤️ by the NYCU Research Team*
+*Developed by the NYCU OPC Research Team · Department of Photonics · Hsinchu, Taiwan*
 
 </div>
