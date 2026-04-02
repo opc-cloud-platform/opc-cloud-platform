@@ -333,25 +333,25 @@ To request access for research or professional use, register directly on the pla
 
 The following publications document the research and validation underpinning the OPC+ platform.
 
-**Platform & Cloud Infrastructure & Core Algorithms**
-
-\[1\] S.-Y. Wang et al., "Providing optimal optical proximity correction cloud services for the semiconductor industry," in *IEEE International Conference on Cloud Computing Technology and Science (CloudCom)*, IEEE, 2025.
-
-\[2\] H.-L. Liu et al., "Intelligent proximity correction enabled large-area metasurfaces by KrF photolithography," *IEEE Access*, vol. 13, pp. 195517–195525, 2025.
-
-\[3\] P.-H. Fang and P. Yu, "Tackling data inconsistency and runtime issues in inverse lithography technology (ILT) with comparative convergence study," in *DTCO and Computational Patterning III*, vol. 12954, SPIE, 2024, p. 129541E.
-
-\[4\] K.-H. Wang, P.-H. Fang, and P. Yu, "Practical inverse mask synthesis via data-efficient physics-informed neural networks (PINN) model," in *DTCO and Computational Patterning IV*, vol. 13425, SPIE, 2025.
-
-\[5\] P.-H. Fang, Y.-S. Chen, J.-S. Wu, and P. Yu, "Inverse reticle optimization with quantum annealing and hybrid solvers," *IEEE Access*, vol. 12, pp. 33069–33078, 2024.
-
 **Foundational References**
 
-\[6\] L. Pang, "Inverse lithography technology: 30 years from concept to practical, full-chip reality," *Journal of Micro/Nanopatterning, Materials, and Metrology*, vol. 20, no. 3, pp. 030901–030901, 2021.
+\[1\] C. Mack, *Fundamental Principles of Optical Lithography: The Science of Microfabrication*. John Wiley & Sons, 2007.
 
-\[7\] C. Mack, *Fundamental Principles of Optical Lithography: The Science of Microfabrication*. John Wiley & Sons, 2007.
+\[2\] L. Pang, "Inverse lithography technology: 30 years from concept to practical, full-chip reality," *Journal of Micro/Nanopatterning, Materials, and Metrology*, vol. 20, no. 3, pp. 030901–030901, 2021.
 
-\[8\] Y. Shen, N. Wong, and E. Y. Lam, "Level-set-based inverse lithography for photomask synthesis," *Optics Express*, vol. 17, no. 26, pp. 23690–23701, 2009.
+**Research Publications**
+
+\[3\] S.-Y. Wang et al., "Providing optimal optical proximity correction cloud services for the semiconductor industry," in *IEEE International Conference on Cloud Computing Technology and Science (CloudCom)*, IEEE, 2025.
+
+\[4\] P.-H. Fang and P. Yu, "Tackling data inconsistency and runtime issues in inverse lithography technology (ILT) with comparative convergence study," in *DTCO and Computational Patterning III*, vol. 12954, SPIE, 2024, p. 129541E.
+
+\[5\] H.-L. Liu et al., "Intelligent proximity correction enabled large-area metasurfaces by KrF photolithography," *IEEE Access*, vol. 13, pp. 195517–195525, 2025.
+
+\[6\] Y. Shen, N. Wong, and E. Y. Lam, "Level-set-based inverse lithography for photomask synthesis," *Optics Express*, vol. 17, no. 26, pp. 23690–23701, 2009.
+
+\[7\] K.-H. Wang, P.-H. Fang, and P. Yu, "Practical inverse mask synthesis via data-efficient physics-informed neural networks (PINN) model," in *DTCO and Computational Patterning IV*, vol. 13425, SPIE, 2025.
+
+\[8\] P.-H. Fang, Y.-S. Chen, J.-S. Wu, and P. Yu, "Inverse reticle optimization with quantum annealing and hybrid solvers," *IEEE Access*, vol. 12, pp. 33069–33078, 2024.
 
 ---
 

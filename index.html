@@ -576,7 +576,7 @@
 
     <p>
       Semiconductor and photonic devices are fabricated by projecting light through a patterned mask onto a
-      photosensitive wafer—a process called <strong>photolithography</strong> [7]. Because the wavelength of the
+      photosensitive wafer—a process called <strong>photolithography</strong> [1]. Because the wavelength of the
       exposure source is comparable to, or larger than, the minimum feature sizes being printed,
       <strong>optical diffraction</strong> causes the projected image to deviate systematically from the intended
       design: line ends shorten, corners round off, and isolated features may fail to print entirely.
@@ -586,7 +586,7 @@
       layout to compensate for these optical and process-induced effects, so that the final printed pattern on
       the wafer faithfully reproduces the designer's intent. Modern OPC is increasingly realized through
       <strong>Inverse Lithography Technology (ILT)</strong>—a full-mask optimization approach that directly
-      solves for the mask shape required to produce a target wafer image [6].
+      solves for the mask shape required to produce a target wafer image [2].
     </p>
 
     <div class="figure-wrap" style="margin-top:2rem;">
@@ -632,14 +632,14 @@
       OPC+ is a <strong>cloud-native, GPU-accelerated</strong> platform that democratizes advanced mask
       correction. By replacing CPU-bound solvers with massively parallel GPU computation and wrapping the entire
       workflow in an intuitive web interface, OPC+ removes the barriers of traditional tools while extending
-      OPC capabilities to cutting-edge photonic and semiconductor applications [1].
+      OPC capabilities to cutting-edge photonic and semiconductor applications [3].
     </p>
     <p style="margin-top:1rem;">The platform is built around three core principles:</p>
 
     <div class="feature-grid" style="margin-top:1.5rem; grid-template-columns: repeat(3,1fr);">
       <div class="feature-card">
         <h3>Speed</h3>
-        <p>CUDA Multi-Stream parallelism delivers <strong>50× faster</strong> correction than CPU-based solvers. Jobs that previously required hours complete in minutes, enabling rapid design iteration [1][3].</p>
+        <p>CUDA Multi-Stream parallelism delivers <strong>50× faster</strong> correction than CPU-based solvers. Jobs that previously required hours complete in minutes, enabling rapid design iteration [3][4].</p>
       </div>
       <div class="feature-card">
         <h3>Accessibility</h3>
@@ -647,7 +647,7 @@
       </div>
       <div class="feature-card">
         <h3>Generality</h3>
-        <p>Native curvilinear mask support enables OPC beyond digital CMOS, validated on photonic integrated circuits and large-area metasurfaces [2][3].</p>
+        <p>Native curvilinear mask support enables OPC beyond digital CMOS, validated on photonic integrated circuits and large-area metasurfaces [5][4].</p>
       </div>
     </div>
   </div>
@@ -697,7 +697,7 @@
       For photonic ring resonators, OPC correction is critical to device functionality. Without correction,
       the coupling gap region fails to open properly—a <strong>fatal fabrication defect</strong> that renders
       the device non-functional optically. With OPC, the waveguide geometry is accurately reproduced and
-      the coupling region is fully resolved [2].
+      the coupling region is fully resolved [5].
     </p>
     <div class="sem-grid">
       <div class="sem-card">
@@ -724,7 +724,7 @@
       phase profile of the device. Without OPC, the photolithography process fails to resolve the smallest
       features—they are either significantly distorted or lost entirely—compromising the optical function of
       the device. With OPC, all features are faithfully reproduced after lithography, preserving the intended
-      phase distribution across the aperture [2].
+      phase distribution across the aperture [5].
     </p>
     <div class="sem-grid">
       <div class="sem-card">
@@ -756,7 +756,7 @@
     <div class="feature-grid">
       <div class="feature-card">
         <h3>GPU Acceleration</h3>
-        <p>Leveraging CUDA Multi-Stream image-level parallelism, OPC+ achieves <strong>50× faster</strong> mask correction compared to CPU-based methods [1][3].</p>
+        <p>Leveraging CUDA Multi-Stream image-level parallelism, OPC+ achieves <strong>50× faster</strong> mask correction compared to CPU-based methods [3][4].</p>
       </div>
       <div class="feature-card">
         <h3>Cloud-Native Architecture</h3>
@@ -764,15 +764,15 @@
       </div>
       <div class="feature-card">
         <h3>Native Curvilinear Mask Support</h3>
-        <p>OPC+ natively generates <strong>curvilinear masks</strong> without polygonal approximation, preserving optical phase and waveguide coupling efficiency in photonic applications [2].</p>
+        <p>OPC+ natively generates <strong>curvilinear masks</strong> without polygonal approximation, preserving optical phase and waveguide coupling efficiency in photonic applications [5].</p>
       </div>
       <div class="feature-card">
         <h3>Global Inverse Optimization</h3>
-        <p>Full-mask ILT with contour-based L2 optimization achieves superior pattern fidelity and CD uniformity compared to rule-based windowed correction approaches [3][8].</p>
+        <p>Full-mask ILT with contour-based L2 optimization achieves superior pattern fidelity and CD uniformity compared to rule-based windowed correction approaches [4][6].</p>
       </div>
       <div class="feature-card">
         <h3>Predictable Turnaround</h3>
-        <p>Two-tier dynamic workload scheduling maintains <strong>&lt;2% execution imbalance</strong> across heterogeneous GPU nodes, enabling reliable and consistent job delivery [1].</p>
+        <p>Two-tier dynamic workload scheduling maintains <strong>&lt;2% execution imbalance</strong> across heterogeneous GPU nodes, enabling reliable and consistent job delivery [3].</p>
       </div>
       <div class="feature-card">
         <h3>Industry-Standard Formats</h3>
@@ -793,17 +793,17 @@
       <div class="module-card">
         <div class="module-num">1</div>
         <h3>OPC Correction</h3>
-        <p>Advanced full-mask inverse lithography with contour-based L2 optimization. Achieves holistic pattern fidelity superior to traditional EPE rule-based correction [3][8].</p>
+        <p>Advanced full-mask inverse lithography with contour-based L2 optimization. Achieves holistic pattern fidelity superior to traditional EPE rule-based correction [4][6].</p>
       </div>
       <div class="module-card">
         <div class="module-num">2</div>
         <h3>Aerial Image Simulation</h3>
-        <p>High-fidelity imaging simulation incorporating user-defined scanner parameters: exposure wavelength, numerical aperture (NA), spatial resolution, and illumination source configuration [7].</p>
+        <p>High-fidelity imaging simulation incorporating user-defined scanner parameters: exposure wavelength, numerical aperture (NA), spatial resolution, and illumination source configuration [1].</p>
       </div>
       <div class="module-card">
         <div class="module-num">3</div>
         <h3>Physical Model Calibration</h3>
-        <p>Analytical imaging models fitted to actual lithography process data using CD-SEM measurements. Accounts for scanner-specific, resist, and process variations [3].</p>
+        <p>Analytical imaging models fitted to actual lithography process data using CD-SEM measurements. Accounts for scanner-specific, resist, and process variations [4].</p>
       </div>
     </div>
 
@@ -977,7 +977,7 @@ flowchart LR
       and the <strong>Network and System Laboratory (NSL Lab)</strong> at National Yang Ming Chiao Tung
       University (NYCU). The platform has been validated through collaborative engagements with leading
       semiconductor and photonics research institutions, bridging cutting-edge academic research in
-      computational lithography with real-world industrial fabrication requirements [1][2].
+      computational lithography with real-world industrial fabrication requirements [3][5].
     </p>
     <div class="partner-list">
       <div class="partner-pill">Taiwan Semiconductor Research Institute (TSRI)</div>
@@ -1020,22 +1020,22 @@ flowchart LR
     <p style="margin-bottom:1.5rem;">The following publications document the research and validation underpinning the OPC+ platform.</p>
 
     <div class="ref-group">
-      <div class="ref-group-title">Research Publications</div>
+      <div class="ref-group-title">Foundational References</div>
       <ul class="ref-list">
-        <li><span class="ref-num">[1]</span> S.-Y. Wang et al., "Providing optimal optical proximity correction cloud services for the semiconductor industry," in <em>IEEE International Conference on Cloud Computing Technology and Science (CloudCom)</em>, IEEE, 2025.</li>
-        <li><span class="ref-num">[2]</span> H.-L. Liu et al., "Intelligent proximity correction enabled large-area metasurfaces by KrF photolithography," <em>IEEE Access</em>, vol. 13, pp. 195517–195525, 2025.</li>
-        <li><span class="ref-num">[3]</span> P.-H. Fang and P. Yu, "Tackling data inconsistency and runtime issues in inverse lithography technology (ILT) with comparative convergence study," in <em>DTCO and Computational Patterning III</em>, vol. 12954, SPIE, 2024, p. 129541E.</li>
-        <li><span class="ref-num">[4]</span> K.-H. Wang, P.-H. Fang, and P. Yu, "Practical inverse mask synthesis via data-efficient physics-informed neural networks (PINN) model," in <em>DTCO and Computational Patterning IV</em>, vol. 13425, SPIE, 2025.</li>
-        <li><span class="ref-num">[5]</span> P.-H. Fang, Y.-S. Chen, J.-S. Wu, and P. Yu, "Inverse reticle optimization with quantum annealing and hybrid solvers," <em>IEEE Access</em>, vol. 12, pp. 33069–33078, 2024.</li>
+        <li><span class="ref-num">[1]</span> C. Mack, <em>Fundamental Principles of Optical Lithography: The Science of Microfabrication</em>. John Wiley &amp; Sons, 2007.</li>
+        <li><span class="ref-num">[2]</span> L. Pang, "Inverse lithography technology: 30 years from concept to practical, full-chip reality," <em>Journal of Micro/Nanopatterning, Materials, and Metrology</em>, vol. 20, no. 3, pp. 030901–030901, 2021.</li>
       </ul>
     </div>
 
     <div class="ref-group">
-      <div class="ref-group-title">Foundational References</div>
+      <div class="ref-group-title">Research Publications</div>
       <ul class="ref-list">
-        <li><span class="ref-num">[6]</span> L. Pang, "Inverse lithography technology: 30 years from concept to practical, full-chip reality," <em>Journal of Micro/Nanopatterning, Materials, and Metrology</em>, vol. 20, no. 3, pp. 030901–030901, 2021.</li>
-        <li><span class="ref-num">[7]</span> C. Mack, <em>Fundamental Principles of Optical Lithography: The Science of Microfabrication</em>. John Wiley &amp; Sons, 2007.</li>
-        <li><span class="ref-num">[8]</span> Y. Shen, N. Wong, and E. Y. Lam, "Level-set-based inverse lithography for photomask synthesis," <em>Optics Express</em>, vol. 17, no. 26, pp. 23690–23701, 2009.</li>
+        <li><span class="ref-num">[3]</span> S.-Y. Wang et al., "Providing optimal optical proximity correction cloud services for the semiconductor industry," in <em>IEEE International Conference on Cloud Computing Technology and Science (CloudCom)</em>, IEEE, 2025.</li>
+        <li><span class="ref-num">[4]</span> P.-H. Fang and P. Yu, "Tackling data inconsistency and runtime issues in inverse lithography technology (ILT) with comparative convergence study," in <em>DTCO and Computational Patterning III</em>, vol. 12954, SPIE, 2024, p. 129541E.</li>
+        <li><span class="ref-num">[5]</span> H.-L. Liu et al., "Intelligent proximity correction enabled large-area metasurfaces by KrF photolithography," <em>IEEE Access</em>, vol. 13, pp. 195517–195525, 2025.</li>
+        <li><span class="ref-num">[6]</span> Y. Shen, N. Wong, and E. Y. Lam, "Level-set-based inverse lithography for photomask synthesis," <em>Optics Express</em>, vol. 17, no. 26, pp. 23690–23701, 2009.</li>
+        <li><span class="ref-num">[7]</span> K.-H. Wang, P.-H. Fang, and P. Yu, "Practical inverse mask synthesis via data-efficient physics-informed neural networks (PINN) model," in <em>DTCO and Computational Patterning IV</em>, vol. 13425, SPIE, 2025.</li>
+        <li><span class="ref-num">[8]</span> P.-H. Fang, Y.-S. Chen, J.-S. Wu, and P. Yu, "Inverse reticle optimization with quantum annealing and hybrid solvers," <em>IEEE Access</em>, vol. 12, pp. 33069–33078, 2024.</li>
       </ul>
     </div>
   </div>
